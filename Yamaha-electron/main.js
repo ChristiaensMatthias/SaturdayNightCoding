@@ -1,4 +1,5 @@
-const electron = require('electron')
+const electron = require('electron');
+const {ipcMain} = require('electron');
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
@@ -56,19 +57,36 @@ app.on('activate', function () {
   }
 })
 
-var YamahaAPI = require("yamaha-nodejs");
-var yamaha = new YamahaAPI("192.168.0.100");
-yamaha.powerOn().then(function(){
-  console.log("powerOn");
-  yamaha.setMainInputTo("NET RADIO").then( function(){
-    console.log("Switched to Net Radio");
-    yamaha.selectWebRadioListItem(1).then(function(){
-      console.log("Selected Favorites");
-      yamaha.selectWebRadioListItem(1).then(function(){});
-    });
-
-  });
-});
-
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+
+
+//INCLUDE IP
+os = require('os');
+
+var interfaces = os.networkInterfaces();
+var addresses = [];
+for (var k in interfaces) {
+  for (var k2 in interfaces[k]) {
+    var address = interfaces[k][k2];
+    if (address.family === 'IPv4' && !address.internal) {
+      addresses.push(address.address);
+    }
+  }
+}
+
+var ipAddr = addresses[0];
+
+//INCLUDE YAMAHA
+var Yamaha = require("yamaha-nodejs");
+var yamaha = new Yamaha(); // Auto-Discovery
+
+
+ipcMain.on('mute-on', function(event){
+  yamaha.muteOn()
+});
+
+ipcMain.on('mute-off', function(event){
+  yamaha.muteOff()
+});
