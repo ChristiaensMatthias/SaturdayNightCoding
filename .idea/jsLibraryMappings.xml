@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$/Wishy" libraries="{SaturdayNightCoding/Wishy/node_modules}" />
     <file url="file://$PROJECT_DIR$/Yamaha-electron" libraries="{SaturdayNightCoding/Yamaha-electron/node_modules}" />
   </component>
 </project>
